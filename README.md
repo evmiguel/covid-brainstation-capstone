@@ -34,9 +34,7 @@ Feel free to rename the folder and customize the project structure to best fit y
 
 ### Executive Summary
 
-... Define the problem
-... What is the data science opportunity
-... Key takeaways
+The COVID pandemic exposed systemic challenges in hospitals related to staffing, bed availability, and supply shortages during infectious outbreaks. If hospitals had clear indicators of rising demand in advance, they could better address these issues, care for more patients, and deliver more comprehensive care during crises. This project aims to develop data-driven models that identify these indicators, enabling the implementation of effective policies and procedures.
 
 ### Demo
 
