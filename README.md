@@ -36,20 +36,16 @@ Feel free to rename the folder and customize the project structure to best fit y
 
 The COVID pandemic exposed systemic challenges in hospitals related to staffing, bed availability, and supply shortages during infectious outbreaks. If hospitals had clear indicators of rising demand in advance, they could better address these issues, care for more patients, and deliver more comprehensive care during crises. This project aims to develop data-driven models that identify these indicators, enabling the implementation of effective policies and procedures.
 
+
+
 ### Demo
 
-... Show your work:
-...     Data visualizations
-...     Interactive demo (e.g., `streamlit` app)
-...     Short video of users trying out the solution
+TBD
 
 
 ### Methodology
 
-... High-level diagrams of entire process:
-...     various data processing steps
-...     various modelling directions
-...     various prototyping directions
+TBD
 
 
 ### Organization
