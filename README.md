@@ -1,42 +1,21 @@
-# BrainStation Data Science Capstone Template
-
-This is a template repository for setting up your capstone project: it includes a simple folder structure and placeholder files for the most important assets you will be creating.
-
-## Usage
-
-1. Start a new GitHub repo using this template.
-2. Update your `LICENSE` file with date and owner.
-3. Update your `README.md` file to reflect the project - see a sample structure below and please refer to Synapse on what needs to be included here. 
-4. Set up and activate your conda environment:
-    - Create a new `conda` environment for your capstone project.
-    - Activate the environment and export:
-        ```bash
-        conda env export > conda.yml
-        ```
-    - Make sure re-export every time after you update the environment.
-    - You can reset your conda environment by running:
-        ```bash
-        conda env create -f conda.yml
-        conda activate <your-env-name>
-        ```
-5. Add your own notebooks in `./notebooks/` and remove placeholders.
-6. Add your own data in `./data/` and remove placeholder. Note: `.gitignore` will ignore the data folder when you push to github, save a copy of your raw and processed data, pickled models in a Google Drive folder and add the link in the `data_links.md` file.
-7. Add your project documents, figures, reports, presentation pdf's in the `./docs` and remove placeholders.
-8. Add your references (tutorials, papers, books etc.) in `./references`. 
-9. Add your own scripts in `./src/` and remove unnecessary folders.
-
-Feel free to rename the folder and customize the project structure to best fit your work - this template is just the starting point.
-
-------------------------------------------------------------------------------
-
-## Project Title
-=========================
+## Hospital Emergency Preparedness Capstone Project
 
 ### Executive Summary
 
-The COVID pandemic exposed systemic challenges in hospitals related to staffing, bed availability, and supply shortages during infectious outbreaks. If hospitals had clear indicators of rising demand in advance, they could better address these issues, care for more patients, and deliver more comprehensive care during crises. This project aims to develop data-driven models that identify these indicators, enabling the implementation of effective policies and procedures.
+#### The Problem area
+The COVID pandemic exposed systemic challenges in hospitals related to staffing, bed availability, and supply shortages during infectious outbreaks. If hospitals had clear indicators of rising demand in advance, they could better address these issues, care for more patients, and deliver more comprehensive care during crises. This project aims to develop data-driven models that identify leading indications, enabling the implementation of effective policies and procedures.
 
+#### The User
+Hospitals, nursing homes, prisons, and urgent care can benefit from the analyses and predictions from this project to ensure they are fully prepared for the small or large scale outbreaks. They can use the tools developed from this project to be more proactive in their approach to outbreaks in their area. This can look like preparing more beds for patients and ensuring more doctors and nurses are available for these situations. Facilities can better allocate the resources that they already have.
 
+#### The Big Idea
+Given the dataset below, there are many ways to use machine learning to create solutions for hospitals. Machine learning could be used to predict the number of beds needed given the previous day's admission and number of people who were positive with COVID. It can also be used to estimate the number of staff needed based on whether there was a shortage the previous day. Machine learning can also help predict the rate of the virus based on the admissions in a given time frame.
+
+#### The Impact
+Hospitals are known for being underfunded, and they require the support of a better public health system3. This project is by no means a solution to the underlying public health infrastructure issues that hospitals face, but it can ease them and other related facilities when handling outbreaks in their area. This project will most likely not increase hospital revenue, but it will improve efficiency in staffing and providing supplies to admitted patients. It will also help isolate more complex patients, suffering from the flu and COVID for example, and move them to separate units for better care.
+
+#### The Data
+A key dataset for this project is the COVID-19 Reported Patient Impact and Hospital Capacity by State Time Series data provided by [HealthData.gov](https://healthdata.gov/Hospital/COVID-19-Reported-Patient-Impact-and-Hospital-Capa/g62h-syeh/about_data). It is a rich dataset with about 81,000 rows of time series data by state. It covers data such as critical staff shortages, anticipated shortages, the number of inpatient beds available and utilized, admissions by age group, suspected COVID cases, percentage of COVID cases, deaths, and flu cases.
 
 ### Demo
 
@@ -85,8 +64,5 @@ TBD
 
 #### Dataset
 
-... Google Drive links to datasets and pickled models
+The dataset was sourced from [HealthData.gov](https://healthdata.gov/Hospital/COVID-19-Reported-Patient-Impact-and-Hospital-Capa/g62h-syeh/about_data) on July 25, 2024.
 
-### Credits & References
-
-... Include any personal learning
