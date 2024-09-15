@@ -1,3 +1,4 @@
+name: capstone
 channels:
   - conda-forge
   - defaults
@@ -14,3 +15,4 @@ dependencies:
   - tensorflow
   - keras-preprocessing
   - pytorch
+  - streamlit

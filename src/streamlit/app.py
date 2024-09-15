@@ -98,17 +98,17 @@ model_type = st.sidebar.selectbox("Select a model", ["Linear Regression", "XGBoo
 
 if model_type == "Linear Regression":
     best_model.header("Linear Regression")
-    r2.text(f"R^2: {r2_pkl_lr[region]["r2"] * 100:.2f}%")
-    model = joblib.load(f"models/{r2_pkl_lr[region]["filename"]}")
+    r2.text(f"R^2: {r2_pkl_lr[region]['r2'] * 100:.2f}%")
+    model = joblib.load(f"models/{r2_pkl_lr[region]['filename']}")
     raw_features = [feature.split("-")[0] if len(feature.split("-")) == 2 else feature.split("-")[0] + "-" + feature.split("-")[1] for feature in r2_pkl_lr[region]["features"]]
 elif model_type == "XGBoost":
     best_model.header("XGBoost")
-    r2.text(f"R^2: {r2_pkl_xgb[region]["r2"] * 100:.2f}%")
-    model = joblib.load(f"models/{r2_pkl_xgb[region]["filename"]}")
+    r2.text(f"R^2: {r2_pkl_xgb[region]['r2'] * 100:.2f}%")
+    model = joblib.load(f"models/{r2_pkl_xgb[region]['filename']}")
     raw_features = [feature.split("-")[0] if len(feature.split("-")) == 2 else feature.split("-")[0] + "-" + feature.split("-")[1] for feature in r2_pkl_xgb[region]["features"]]
 else:
     best_model.header("Neural Net")
-    r2.text(f"R^2: {r2_pkl_nn[region]["r2"] * 100:.2f}%")
+    r2.text(f"R^2: {r2_pkl_nn[region]['r2'] * 100:.2f}%")
     raw_features = [feature.split("-")[0] if len(feature.split("-")) == 2 else feature.split("-")[0] + "-" + feature.split("-")[1] for feature in r2_pkl_nn[region]["features"]]
 
 feature_map = {}
@@ -117,9 +117,10 @@ for feature in raw_features:
 
 input_df = pd.DataFrame(feature_map, index=[0])
 if model_type == "Neural Net":
-    model = torch.load(f"models/{r2_pkl_nn[region]["filename"]}", weights_only=False)
-    prediction.text(model(torch.tensor(input_df.values, dtype=torch.float32)).item())
+    model = torch.load(f"models/{r2_pkl_nn[region]['filename']}", weights_only=False)
+    shortage = model(torch.tensor(input_df.values, dtype=torch.float32)).item()
 else:
-    prediction.text(model.predict(input_df)[0])
+    shortage = model.predict(input_df)[0]
+prediction.text(f"Staffing shortage: {round(shortage)}")
 
 
