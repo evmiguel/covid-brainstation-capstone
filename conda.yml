@@ -9,3 +9,8 @@ dependencies:
   - scikit-learn
   - seaborn
   - plotly
+  - prophet
+  - xgboost
+  - tensorflow
+  - keras-preprocessing
+  - pytorch
