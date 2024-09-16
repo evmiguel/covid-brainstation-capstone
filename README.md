@@ -3,28 +3,41 @@
 ### Executive Summary
 
 #### The Problem area
-The COVID pandemic exposed systemic challenges in hospitals related to staffing, bed availability, and supply shortages during infectious outbreaks. If hospitals had clear indicators of rising demand in advance, they could better address these issues, care for more patients, and deliver more comprehensive care during crises. This project aims to develop data-driven models that identify leading indications, enabling the implementation of effective policies and procedures.
+The COVID pandemic exposed systemic challenges in hospitals related to staffing, bed availability, and supply shortages during infectious outbreaks. If hospitals had clear indicators of rising demand in advance, they could better address these issues, care for more patients, and deliver more comprehensive care during crises. This project aims to develop data-driven models that identify leading indications for hospital staffing shortages by U.S. region.
 
 #### The User
-Hospitals, nursing homes, prisons, and urgent care can benefit from the analyses and predictions from this project to ensure they are fully prepared for the small or large scale outbreaks. They can use the tools developed from this project to be more proactive in their approach to outbreaks in their area. This can look like preparing more beds for patients and ensuring more doctors and nurses are available for these situations. Facilities can better allocate the resources that they already have.
+Hospitals can benefit from the analyses and predictions from this project to ensure they are fully prepared for staffing shortages during small or large scale outbreaks. This can look ensuring more doctors and nurses are available and optimizing schedules based on the predictions of a model.
 
 #### The Big Idea
-Given the dataset below, there are many ways to use machine learning to create solutions for hospitals. Machine learning could be used to predict the number of beds needed given the previous day's admission and number of people who were positive with COVID. It can also be used to estimate the number of staff needed based on whether there was a shortage the previous day. Machine learning can also help predict the rate of the virus based on the admissions in a given time frame.
+Using machine learning methods such as Linear Regression, XGBoost, and Neural Networks, optimal models for a given U.S. region can be used to predict the number of staff that a region will be short. The techniques used on a per region basis can be applied to individual hospitals.
 
 #### The Impact
-Hospitals are known for being underfunded, and they require the support of a better public health system3. This project is by no means a solution to the underlying public health infrastructure issues that hospitals face, but it can ease them and other related facilities when handling outbreaks in their area. This project will most likely not increase hospital revenue, but it will improve efficiency in staffing and providing supplies to admitted patients. It will also help isolate more complex patients, suffering from the flu and COVID for example, and move them to separate units for better care.
+Hospitals are known for being underfunded, and they require the support of a better public health system. This project is by no means a solution to the underlying public health infrastructure issues that hospitals face, but it can provide an example of how machine learning techniques can be used to predict staffing shortages. As an open source project, it can be extended by the community to provide more sophisticated approaches to health care forcasting and modeling.
 
 #### The Data
 A key dataset for this project is the COVID-19 Reported Patient Impact and Hospital Capacity by State Time Series data provided by [HealthData.gov](https://healthdata.gov/Hospital/COVID-19-Reported-Patient-Impact-and-Hospital-Capa/g62h-syeh/about_data). It is a rich dataset with about 81,000 rows of time series data by state. It covers data such as critical staff shortages, anticipated shortages, the number of inpatient beds available and utilized, admissions by age group, suspected COVID cases, percentage of COVID cases, deaths, and flu cases.
 
 ### Demo
 
-TBD
+1. Download data from [here](https://drive.google.com/drive/folders/1eWaBiZ5lzmiiJq-Ggaufb2A4R1Mz0RC0?usp=drive_link) into the `data` folder.
+2. Activate the conda environment
+```
+conda env create -f conda.yml
+conda activate capstone
+```
+3. Run the app
+```
+streamlit run src/streamlit/app.py
+```
 
 
 ### Methodology
 
-TBD
+1. Data cleaning. See `notebooks/01-data-loading-cleaning.ipynb`
+2. Data preprocessing. See `notebooks/04-modelling.ipynb`
+    - Features extracted using a lasso regression. See `get_features_by_region` in `lib/df_processing.py`
+    - Create lagged DataFrames. See `create_rolling_df` in `lib/df_processing.py`
+3. Modelling. See `notebooks/04-modelling.ipynb`
 
 
 ### Organization
@@ -33,7 +46,6 @@ TBD
 
 * `data` 
     - contains link to copy of the dataset (stored in a publicly accessible cloud storage)
-    - saved copy of aggregated / processed data as long as those are not too large (> 10 MB)
 
 * `model`
     - `joblib` dump of final model(s)
