@@ -7,12 +7,17 @@ import torch
 import torch.nn as nn
 import sys; sys.path.insert(0, '.')
 from lib import df_processing
+import matplotlib.pyplot as plt
+import datetime
 
 #######################################################################################
 # CONFIGURATION
 #######################################################################################
 
 st.set_page_config(page_title="COVID Staff Shortage Predictor")
+
+def get_feature_name(feature):
+    return feature.split("-")[0] if len(feature.split("-")) == 2 else feature.split("-")[0] + "-" + feature.split("-")[1]
 
 #######################################################################################
 # NEURAL NET FOR LOADING MODEL
@@ -85,7 +90,10 @@ with open("./data/r2_pkl_nn.json", 'r') as file:
 
 best_model = st.empty()
 r2 = st.empty()
-prediction = st.empty()
+prediction_lr = st.empty()
+prediction_xgb = st.empty()
+prediction_nn = st.empty()
+lag = 1
 
 #######################################################################################
 # APPLICATION
@@ -93,34 +101,80 @@ prediction = st.empty()
 
 region = st.sidebar.selectbox("Select a region", ["New England", "Mid Atlantic", "Midwest", "South", "Southwest", "West"])
 
-model_type = st.sidebar.selectbox("Select a model", ["Linear Regression", "XGBoost", "Neural Net"])
 
-
-if model_type == "Linear Regression":
-    best_model.header("Linear Regression")
-    r2.text(f"R^2: {r2_pkl_lr[region]['r2'] * 100:.2f}%")
-    model = joblib.load(f"models/{r2_pkl_lr[region]['filename']}")
-    raw_features = [feature.split("-")[0] if len(feature.split("-")) == 2 else feature.split("-")[0] + "-" + feature.split("-")[1] for feature in r2_pkl_lr[region]["features"]]
-elif model_type == "XGBoost":
-    best_model.header("XGBoost")
-    r2.text(f"R^2: {r2_pkl_xgb[region]['r2'] * 100:.2f}%")
-    model = joblib.load(f"models/{r2_pkl_xgb[region]['filename']}")
-    raw_features = [feature.split("-")[0] if len(feature.split("-")) == 2 else feature.split("-")[0] + "-" + feature.split("-")[1] for feature in r2_pkl_xgb[region]["features"]]
+if region == "New England":
+    options = [datetime.datetime(2021, 1, 1), datetime.datetime(2021, 7, 1), datetime.datetime(2024, 4, 1)]
+elif region == "Mid Atlantic":
+    options = [datetime.datetime(2020, 11, 1), datetime.datetime(2020, 12, 1), datetime.datetime(2021, 12, 1), datetime.datetime(2022, 5, 1), datetime.datetime(2022, 8, 1), datetime.datetime(2024, 4, 1)]
+elif region == "Midwest":
+    options = [datetime.datetime(2020, 8, 1), datetime.datetime(2021, 7, 1), datetime.datetime(2022, 2, 1), datetime.datetime(2024, 4, 1)]
+elif region == "South":
+    options = [datetime.datetime(2021, 1, 1), datetime.datetime(2021, 7, 1), datetime.datetime(2022, 1, 1), datetime.datetime(2024, 4, 1)]
+elif region == "Southwest":
+    options = [datetime.datetime(2020, 8, 1), datetime.datetime(2021, 1, 1), datetime.datetime(2021, 7, 1), datetime.datetime(2022, 1, 1), datetime.datetime(2024, 4, 1)]
 else:
-    best_model.header("Neural Net")
-    r2.text(f"R^2: {r2_pkl_nn[region]['r2'] * 100:.2f}%")
-    raw_features = [feature.split("-")[0] if len(feature.split("-")) == 2 else feature.split("-")[0] + "-" + feature.split("-")[1] for feature in r2_pkl_nn[region]["features"]]
+    options = [datetime.datetime(2020, 7, 1), datetime.datetime(2021, 1, 1), datetime.datetime(2021, 7, 1), datetime.datetime(2022, 1, 1), datetime.datetime(2024, 4, 1)]
 
-feature_map = {}
-for feature in raw_features:
-    feature_map[feature] = st.sidebar.slider(feature, dfs_region_map[region][feature].min(), dfs_region_map[region][feature].max())
+chosen_date = st.sidebar.select_slider("Select a date", options=options)
 
-input_df = pd.DataFrame(feature_map, index=[0])
-if model_type == "Neural Net":
-    model = torch.load(f"models/{r2_pkl_nn[region]['filename']}", weights_only=False)
-    shortage = model(torch.tensor(input_df.values, dtype=torch.float32)).item()
-else:
-    shortage = model.predict(input_df)[0]
-prediction.text(f"Staffing shortage: {round(shortage)}")
+min_default_date = dfs_region_map[region].index.min().to_pydatetime()
+
+lag = st.sidebar.select_slider("Lag", options=[1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+rolling_df = df_processing.create_rolling_df(dfs_region_map[region], lag, ignore_columns=["critical_staffing_shortage_today_yes"])
+
+##################################################################
+# LINEAR REGRESSION
+##################################################################
+model = joblib.load(f"models/lr-{lag}_{region.lower().replace(" ", "_")}.pkl")
+preprocessor = joblib.load(f"models/preprocessor-lr-{lag}_{region.lower().replace(" ", "_")}.pkl")
+raw_features = [feature.split("-")[0] if len(feature.split("-")) == 2 else feature.split("-")[0] + "-" + feature.split("-")[1] for feature in r2_pkl_lr[region][0]["features"]]
+columns = [column for column in rolling_df.columns.drop("critical_staffing_shortage_today_yes") if get_feature_name(column) in raw_features]
+input_df = rolling_df.loc[rolling_df.index == chosen_date, columns]
+scaled_input = preprocessor.transform(input_df)
+shortage_lr = model.predict(scaled_input)[0]
+
+##################################################################
+# XGBoost
+##################################################################
+model = joblib.load(f"models/xgb-{lag}_{region.lower().replace(" ", "_")}.pkl")
+preprocessor = joblib.load(f"models/preprocessor-xgb-{lag}_{region.lower().replace(" ", "_")}.pkl")
+raw_features = [feature.split("-")[0] if len(feature.split("-")) == 2 else feature.split("-")[0] + "-" + feature.split("-")[1] for feature in r2_pkl_xgb[region][0]["features"]]
+columns = [column for column in rolling_df.columns.drop("critical_staffing_shortage_today_yes") if get_feature_name(column) in raw_features]
+input_df = rolling_df.loc[rolling_df.index == chosen_date, columns]
+scaled_input = preprocessor.transform(input_df)
+shortage_xgb = model.predict(scaled_input)[0]
+
+##################################################################
+# Neural Net
+##################################################################
+model = torch.load(f"models/nn-{lag}_{region.lower().replace(" ", "_")}.pt", weights_only=False)
+preprocessor = joblib.load(f"models/preprocessor-nn-{lag}_{region.lower().replace(" ", "_")}.pt")
+raw_features = [feature.split("-")[0] if len(feature.split("-")) == 2 else feature.split("-")[0] + "-" + feature.split("-")[1] for feature in r2_pkl_nn[region][0]["features"]]
+columns = [column for column in rolling_df.columns.drop("critical_staffing_shortage_today_yes") if get_feature_name(column) in raw_features]
+input_df = rolling_df.loc[rolling_df.index == chosen_date, columns]
+scaled_input = preprocessor.transform(input_df)
+shortage_nn = model(torch.tensor(scaled_input, dtype=torch.float32)).item()
+
+
+##################################################################
+# Plotting
+##################################################################
+fig, ax = plt.subplots()
+ax.set_xlim(min_default_date - datetime.timedelta(days=60), chosen_date + datetime.timedelta(days=60))
+ax.plot(dfs_region_map[region].loc[dfs_region_map[region].index <= chosen_date, "critical_staffing_shortage_today_yes"], alpha=0.2)
+ax.plot(chosen_date, dfs_region_map[region].loc[dfs_region_map[region].index == chosen_date, "critical_staffing_shortage_today_yes"], "go")
+ax.plot(chosen_date, shortage_lr, color="red", marker="o")
+ax.plot(chosen_date, shortage_xgb, color="blue", marker="*")
+ax.plot(chosen_date, shortage_xgb, color="orange", marker="X")
+for tick in ax.get_xticklabels():
+    tick.set_rotation(90)
+st.pyplot(fig)
+
+prediction_lr.text(f"Staffing shortage Linear Regression: {round(shortage_lr)}")
+prediction_xgb.text(f"Staffing shortage XGBoost: {round(shortage_xgb)}")
+prediction_nn.text(f"Staffing shortage Neural Net: {round(shortage_nn)}")
+
+
+
 
 
