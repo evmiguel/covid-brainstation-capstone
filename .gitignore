@@ -4,3 +4,4 @@ __pycache__
 *.csv
 *.json
 !cleaned*.csv
+!r2*.json
