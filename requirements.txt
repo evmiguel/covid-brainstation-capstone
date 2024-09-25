@@ -2,3 +2,4 @@ joblib
 torch
 xgboost
 scipy
+scikit-learn
