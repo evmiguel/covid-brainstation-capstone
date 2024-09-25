@@ -1,2 +1,4 @@
 joblib
 torch
+xgboost
+scipy
