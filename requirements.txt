@@ -1,2 +1,2 @@
 joblib
-torch
+pytorch
