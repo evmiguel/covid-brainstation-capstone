@@ -3,3 +3,4 @@ torch
 xgboost
 scipy
 scikit-learn
+plotly
