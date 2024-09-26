@@ -278,6 +278,12 @@ def visualization():
                     title="Critical Staffing Shortage Today Yes",
                     title_x=0.2)
         st.plotly_chart(fig, use_container_width=True)
+        st.markdown("""<div id="maintainer"><i>This project is maintained by <a href="https://erikamiguel.com">Erika Miguel</a>.</i>
+                    </div><style>
+                        #maintainer {
+                            text-align: center;
+                        }
+                    </style>""", unsafe_allow_html=True)
 
     with col3:
         fitbounds = "locations" if region != "West" else False
@@ -382,6 +388,8 @@ def analysis():
              values. However, because it does not offer the same level of interpretability that linear regression does, linear regression is suitable in instances where the model
              needs to be easily explained, especially when extracting feature importances. The neural net, while still useful, does not offer the flexibility that XGBoost provides
              nor the interpretability that linear regression gives and should, therefore, be used with caution.""", unsafe_allow_html=True)
+    
+    st.markdown("*This project is maintained by [Erika Miguel](https://erikamiguel.com).*")
 
 page_names_to_funcs = {
     "Visualization": visualization,
