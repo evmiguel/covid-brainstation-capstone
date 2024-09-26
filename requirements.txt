@@ -2,5 +2,5 @@ joblib
 torch
 xgboost
 scipy
-scikit-learn
+scikit-learn==1.5.1
 plotly
