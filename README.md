@@ -17,7 +17,10 @@ Hospitals are known for being underfunded, and they require the support of a bet
 #### The Data
 A key dataset for this project is the COVID-19 Reported Patient Impact and Hospital Capacity by State Time Series data provided by [HealthData.gov](https://healthdata.gov/Hospital/COVID-19-Reported-Patient-Impact-and-Hospital-Capa/g62h-syeh/about_data). It is a rich dataset with about 81,000 rows of time series data by state. It covers data such as critical staff shortages, anticipated shortages, the number of inpatient beds available and utilized, admissions by age group, suspected COVID cases, percentage of COVID cases, deaths, and flu cases.
 
-### Demo
+### Streamlit Application
+The live application can be viewed on [Streamlit Cloud](https://evmiguel-hospital-shortage.streamlit.app/). It provides a visualization tool for the predictions of the three models and toggles for dates and lags.
+
+### Local Development
 
 1. Download data from [here](https://drive.google.com/drive/folders/1eWaBiZ5lzmiiJq-Ggaufb2A4R1Mz0RC0?usp=drive_link) into the `data` folder.
 2. Activate the conda environment
