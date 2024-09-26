@@ -198,6 +198,11 @@ min_default_date = dfs_region_map[region].index.min().to_pydatetime()
 max_default_date = dfs_region_map[region].index.max().to_pydatetime()
 
 lag = st.sidebar.select_slider("Select a Lag", options=[1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+st.sidebar.write("*What are lag features?*")
+st.sidebar.write("Lag features are values at prior time steps. For example, a lag of 1 means that the features are pulled from *t-1*.")
+st.sidebar.write("*How are lagged features used in this app?*")
+st.sidebar.write("We run different models that use the lags from 1 to 100 to predict a hospital staffing shortage and see how those models compare.")
+
 rolling_df = df_processing.create_rolling_df(dfs_region_map[region], lag, ignore_columns=["critical_staffing_shortage_today_yes"])
 actual_shortage = dfs_region_map[region].loc[dfs_region_map[region].index == chosen_date, "critical_staffing_shortage_today_yes"]
 
@@ -270,20 +275,16 @@ with col2:
                 "x": 0.8,
                 "y": 0.9},
                 title="Critical Staffing Shortage Today Yes",
-                title_x=0.2)
+                title_x=0.2,
+                xaxis_title="Date",
+                yaxis_title="Number of Staff")
     st.plotly_chart(fig, use_container_width=True)
-    st.markdown("""<div id="maintainer"><i>This project is maintained by <a href="https://erikamiguel.com">Erika Miguel</a>.</i>
-                </div><style>
-                    #maintainer {
-                        text-align: center;
-                    }
-                </style>""", unsafe_allow_html=True)
 
 with col3:
     fitbounds = "locations" if region != "West" else False
-    map = px.choropleth(locations=regions[region]["states"], locationmode="USA-states", center=regions[region]["center"], scope="usa", fitbounds=fitbounds)
+    map = px.choropleth(title=region, locations=regions[region]["states"], locationmode="USA-states", center=regions[region]["center"], scope="usa", fitbounds=fitbounds)
     map.update_traces(hoverinfo="skip", hovertemplate=None)
-    map.update_layout(showlegend=False)
+    map.update_layout(showlegend=False, title=dict(y=.75))
     st.plotly_chart(map)
 
     st.markdown("""
@@ -340,7 +341,10 @@ with col3:
                 </style>
                 """, unsafe_allow_html=True)
 
-st.sidebar.write("*What are lag features?*")
-st.sidebar.write("Lag features are values at prior time steps. For example, a lag of 1 means that the features are pulled from *t-1*.")
-st.sidebar.write("*How are lagged features used in this app?*")
-st.sidebar.write("We run different models that use the lags from 1 to 100 to predict a hospital staffing shortage and see how those models compare.")
+st.markdown("""<div id="maintainer"><i>This project is maintained by <a href="https://erikamiguel.com">Erika Miguel</a>.</i>
+                </div><style>
+                    #maintainer {
+                        margin-top: 5em;
+                        text-align: center;
+                    }
+                </style>""", unsafe_allow_html=True)
