@@ -250,7 +250,7 @@ errors = [mean_absolute_error(actual_shortage, actual_shortage), mean_absolute_e
 errors_df = pd.DataFrame(data=errors, index=["Actual", "Linear Regression", "XGBoost", "Neural Net"], columns=["Mean Absolute Error"])
 
 with col1:
-    st.markdown('#### Predictions')
+    st.markdown('#### Number of Staff Predicted')
     st.metric(label="Actual", value=f"{actual_shortage.values[0]:.2f}")
     st.metric(label="Linear Regression", value=f"{shortage_lr:.2f}", delta=f"{round(mean_absolute_error(actual_shortage, [shortage_lr]), 2)} MAE", delta_color="off")
     st.metric(label="XGBoost", value=f"{shortage_xgb:.2f}", delta=f"{round(mean_absolute_error(actual_shortage, [shortage_xgb]), 2)} MAE", delta_color="off")
