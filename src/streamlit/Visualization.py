@@ -12,7 +12,7 @@ import plotly.express as px
 from sklearn.metrics import mean_absolute_error, r2_score
 import datetime
 st.set_page_config(page_title="COVID Staff Shortage Predictor", layout="wide")
-st.sidebar.title("Regional Hospital Staffing Shortage Predictor :stethoscope:")
+st.sidebar.title("Predict Regional Hospital Staffing Shortage :stethoscope:")
 
 
 #######################################################################################
