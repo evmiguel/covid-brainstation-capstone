@@ -78,8 +78,9 @@ def get_features_by_region(dfs_map, scaled=False):
 def create_rolling_df(df, shift, ignore_columns=[]):
     """
     Creates lagged columns by the number of shifts
-    specified. For shift = 2, there will be one column
-    with a lag of 1 and another column with a lag of 2.
+    specified. For shift = 2, each feature column will
+    have -2 appended to the column name and will be
+    shifted by 2.
     """
     data = {}
     numerics = df.select_dtypes('number')
