@@ -200,7 +200,7 @@ def visualization():
     min_default_date = dfs_region_map[region].index.min().to_pydatetime()
     max_default_date = dfs_region_map[region].index.max().to_pydatetime()
 
-    lag = st.sidebar.select_slider("Lag", options=[1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+    lag = st.sidebar.select_slider("Select a Lag", options=[1, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
     rolling_df = df_processing.create_rolling_df(dfs_region_map[region], lag, ignore_columns=["critical_staffing_shortage_today_yes"])
     actual_shortage = dfs_region_map[region].loc[dfs_region_map[region].index == chosen_date, "critical_staffing_shortage_today_yes"]
 
@@ -295,7 +295,7 @@ def visualization():
         st.write("*What are lag features?*")
         st.write("Lag features are values at prior time steps. For example, a lag of 1 means that the features are pulled from *t-1*.")
         st.write("*How are lagged features used in this app?*")
-        st.write("We run different models that use the lagged features to predict a hospital staffing shortage.")
+        st.write("We run different models that use the lags from 1 to 100 to predict a hospital staffing shortage and see how those models compare.")
 
 
 def analysis():
