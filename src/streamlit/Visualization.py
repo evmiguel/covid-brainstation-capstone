@@ -251,9 +251,6 @@ with col1:
     st.metric(label="XGBoost", value=f"{shortage_xgb:.2f}", delta=f"{round(mean_absolute_error(actual_shortage, [shortage_xgb]), 2)} MAE", delta_color="off")
     st.metric(label="Neural Net", value=f"{shortage_nn:.2f}", delta=f"{round(mean_absolute_error(actual_shortage, [shortage_nn]), 2)} MAE", delta_color="off")
 
-    st.write("XGBoost tends to give the best predictions overall.")
-    st.write("Linear Regression tends to exaggerate the prediction with large lags.")
-    st.write("Neural net tends to give mixed results.")
 ##################################################################
 # Plotting
 ##################################################################
@@ -289,7 +286,61 @@ with col3:
     map.update_layout(showlegend=False)
     st.plotly_chart(map)
 
-    st.write("*What are lag features?*")
-    st.write("Lag features are values at prior time steps. For example, a lag of 1 means that the features are pulled from *t-1*.")
-    st.write("*How are lagged features used in this app?*")
-    st.write("We run different models that use the lags from 1 to 100 to predict a hospital staffing shortage and see how those models compare.")
+    st.markdown("""
+            <div id="xgb_blurb">
+            <img src="./app/static/xgb_x.png" width="25" height="25">
+            <p>XGBoost tends to give the best predictions overall.</p>
+            </div>
+            <style>
+                #xgb_blurb {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                }
+
+                #xgb_blurb > img {
+                    margin-right: 5px;
+                }
+            </style>
+            """, unsafe_allow_html=True)
+    
+    st.markdown("""
+                <div id="lr_blurb">
+                <img src="./app/static/lr_c.png" width="25" height="25">
+                <p>Linear Regression tends to exaggerate the prediction with large lags.</p>
+                </div>
+                <style>
+                    #lr_blurb {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                    }
+
+                    #lr_blurb > img {
+                        margin-right: 5px;
+                    }
+                </style>
+                """, unsafe_allow_html=True)
+    
+    st.markdown("""
+                <div id="nn_blurb">
+                <img src="./app/static/nn_t.png" width="25" height="25">
+                <p>Neural net tends to give mixed results.</p>
+                </div>
+                <style>
+                    #nn_blurb {
+                        display: flex;
+                        flex-direction: row;
+                        align-items: center;
+                    }
+
+                    #nn_blurb > img {
+                        margin-right: 5px;
+                    }
+                </style>
+                """, unsafe_allow_html=True)
+
+st.sidebar.write("*What are lag features?*")
+st.sidebar.write("Lag features are values at prior time steps. For example, a lag of 1 means that the features are pulled from *t-1*.")
+st.sidebar.write("*How are lagged features used in this app?*")
+st.sidebar.write("We run different models that use the lags from 1 to 100 to predict a hospital staffing shortage and see how those models compare.")
