@@ -30,7 +30,7 @@ conda activate capstone
 ```
 3. Run the app
 ```
-streamlit run src/streamlit/app.py
+streamlit run src/streamlit/Visualization.py
 ```
 
 

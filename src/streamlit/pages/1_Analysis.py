@@ -78,7 +78,7 @@ st.markdown("""As shown in the R<sup>2</sup> graphs, linear regression is sensit
 st.image('img/r2_complete_mid_atlantic.png')
 
 st.markdown("### Mean Absolute Error Analysis")
-st.markdown("""As shown in the Mean Absolute Error graphs, like the R<sup>2</sup> graphs, linear regression is sensitive to higher lags, as the mean absolute error (MAE)
+st.markdown("""As shown in the Mean Absolute Error (MAE) graphs, like the R<sup>2</sup> graphs, linear regression is sensitive to higher lags, as the mean absolute error
             increases steadily with higher lags. Note that the range and magnitude of errors decrease with XGBoost and the neural network, but their graphs fluctuate as
             the number of lags increases. Moreover, XGBoost has the smallest errors.""", unsafe_allow_html=True)
 st.image('img/error_complete_mid_atlantic.png')
