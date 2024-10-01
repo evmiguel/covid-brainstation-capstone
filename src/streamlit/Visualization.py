@@ -201,7 +201,7 @@ lag = st.sidebar.select_slider("Select a Lag", options=[1, 10, 20, 30, 40, 50, 6
 st.sidebar.write("*What are lag features?*")
 st.sidebar.write("Lag features are values at prior time steps. For example, a lag of 1 means that the features are pulled from *t-1*.")
 st.sidebar.write("*How are lagged features used in this app?*")
-st.sidebar.write("We run different models that use the lags from 1 to 100 to predict a hospital staffing shortage and see how those models compare.")
+st.sidebar.write("We run different models that use the lags from 1 to 100 to predict the number of hospitals experiencing staffing shortages and see how those models compare.")
 
 rolling_df = df_processing.create_rolling_df(dfs_region_map[region], lag, ignore_columns=["critical_staffing_shortage_today_yes"])
 actual_shortage = dfs_region_map[region].loc[dfs_region_map[region].index == chosen_date, "critical_staffing_shortage_today_yes"]
@@ -250,7 +250,7 @@ errors = [mean_absolute_error(actual_shortage, actual_shortage), mean_absolute_e
 errors_df = pd.DataFrame(data=errors, index=["Actual", "Linear Regression", "XGBoost", "Neural Net"], columns=["Mean Absolute Error"])
 
 with col1:
-    st.markdown('#### Number of Staff Predicted')
+    st.markdown('#### Number of Hospitals with Staffing Shortages')
     st.metric(label="Actual", value=f"{actual_shortage.values[0]:.2f}")
     st.metric(label="Linear Regression", value=f"{shortage_lr:.2f}", delta=f"{round(mean_absolute_error(actual_shortage, [shortage_lr]), 2)} MAE", delta_color="off")
     st.metric(label="XGBoost", value=f"{shortage_xgb:.2f}", delta=f"{round(mean_absolute_error(actual_shortage, [shortage_xgb]), 2)} MAE", delta_color="off")
@@ -261,8 +261,8 @@ with col1:
 ##################################################################
 with col2:
     fig = go.Figure()
-    line_graph = go.Scatter(x=pd.date_range(min_default_date, max_default_date), y=dfs_region_map[region].loc[:, "critical_staffing_shortage_today_yes"], name="critical staffing shortage over time", opacity=0.5)
-    actual_point = go.Scatter(x=[chosen_date], y=actual_shortage, marker_symbol="x", marker_size=20, marker_color="#1BFC06", name="actual shortage value")
+    line_graph = go.Scatter(x=pd.date_range(min_default_date, max_default_date), y=dfs_region_map[region].loc[:, "critical_staffing_shortage_today_yes"], name="average critical staffing shortage over time", opacity=0.5)
+    actual_point = go.Scatter(x=[chosen_date], y=actual_shortage, marker_symbol="x", marker_size=20, marker_color="#1BFC06", name="actual value")
     lr_point = go.Scatter(x=[chosen_date], y=[shortage_lr], marker_symbol="circle", marker_color="red", marker_size=15, name="Linear regression prediction")
     xgb_point = go.Scatter(x=[chosen_date], y=[shortage_xgb], marker_symbol="star", marker_color="blue", marker_size=15, name="XGB prediction")
     nn_point = go.Scatter(x=[chosen_date], y=[shortage_nn], marker_symbol="triangle-up", marker_color="orange", marker_size=15, name="Neural net prediction")
@@ -277,8 +277,10 @@ with col2:
                 title="Critical Staffing Shortage Today Yes",
                 title_x=0.2,
                 xaxis_title="Date",
-                yaxis_title="Number of Staff")
+                yaxis_title="Number of Hospitals with Staffing Shortages")
     st.plotly_chart(fig, use_container_width=True)
+    st.markdown("""<div id="explanation"><i>Critical Staffing Shortage Today Yes</i> is the target variable. It represents the average number of hospitals reporting a critical staffing shortage in this region on a particular day.
+                </div>""", unsafe_allow_html=True)
 
 with col3:
     fitbounds = "locations" if region != "West" else False
