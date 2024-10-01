@@ -9,13 +9,13 @@ The COVID pandemic exposed systemic challenges in hospitals related to staffing,
 Hospitals can benefit from the analyses and predictions from this project to ensure they are fully prepared for staffing shortages during small or large scale outbreaks. This can look ensuring more doctors and nurses are available and optimizing schedules based on the predictions of a model.
 
 #### The Big Idea
-Using machine learning methods such as Linear Regression, XGBoost, and Neural Networks, optimal models for a given U.S. region can be used to predict the number of staff that a region will be short. The techniques used on a per region basis can be applied to individual hospitals.
+Using machine learning methods such as Linear Regression, XGBoost, and Neural Networks, optimal models for a given U.S. region can be used to predict the number of hospitals that experience a shortage. The techniques used on a per region basis can be applied to individual hospitals and their staffing supply.
 
 #### The Impact
 Hospitals are known for being underfunded, and they require the support of a better public health system. This project is by no means a solution to the underlying public health infrastructure issues that hospitals face, but it can provide an example of how machine learning techniques can be used to predict staffing shortages. As an open source project, it can be extended by the community to provide more sophisticated approaches to health care forcasting and modeling.
 
 #### The Data
-A key dataset for this project is the COVID-19 Reported Patient Impact and Hospital Capacity by State Time Series data provided by [HealthData.gov](https://healthdata.gov/Hospital/COVID-19-Reported-Patient-Impact-and-Hospital-Capa/g62h-syeh/about_data). It is a rich dataset with about 81,000 rows of time series data by state. It covers data such as critical staff shortages, anticipated shortages, the number of inpatient beds available and utilized, admissions by age group, suspected COVID cases, percentage of COVID cases, deaths, and flu cases.
+A key dataset for this project is the COVID-19 Reported Patient Impact and Hospital Capacity by State Time Series data provided by [HealthData.gov](https://healthdata.gov/Hospital/COVID-19-Reported-Patient-Impact-and-Hospital-Capa/g62h-syeh/about_data). It is a rich dataset with about 81,000 rows of time series data by state. It covers data such as the number of hospitals that have staffing shortages, number of hospitals that anticipate shortages, the number of inpatient beds available and utilized, admissions by age group, suspected COVID cases, percentage of COVID cases, deaths, and flu cases.
 
 ### Streamlit Application
 The live application can be viewed on [Streamlit Cloud](https://evmiguel-hospital-shortage.streamlit.app/). It provides a visualization tool for the predictions of the three models and toggles for dates and lags.
@@ -61,6 +61,9 @@ streamlit run src/streamlit/Visualization.py
 
 * `references`
     - contains papers / tutorials used in the project
+
+* `lib`
+    - Contains the project code utilities
 
 * `src`
     - Contains the project source code (refactored from the notebooks)
